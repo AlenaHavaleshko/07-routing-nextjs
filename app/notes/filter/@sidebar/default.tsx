@@ -7,6 +7,7 @@ import css from "./SidebarNotes.module.css";
 // };
 
 const NotesSidebar = async () => {
+
   return (
     <div>
       <ul className={css.menuList}>

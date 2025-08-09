@@ -1,3 +1,5 @@
+import React from "react";
+
 type Props = {
   children: React.ReactNode;
   sidebar: React.ReactNode;
@@ -6,7 +8,7 @@ type Props = {
 const NotesLayout = ({ children, sidebar }: Props) => {
   return (
     <section>
-      {/* <aside>{sidebar}</aside> */}
+      <aside>{sidebar}</aside>
       <div>{children}</div>
     </section>
   );

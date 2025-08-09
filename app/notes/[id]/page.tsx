@@ -19,7 +19,6 @@ export default async function NoteDetails({ params }: Props) {
     queryKey: ["note", id],
     queryFn: () => fetchNoteById(id),
   });
-  // const note = await fetchNoteById(id);
 
   return (
     <div>

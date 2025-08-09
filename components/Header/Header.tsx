@@ -1,12 +1,10 @@
 import Link from "next/link";
-import { fetchNotes } from "@/lib/api";
 import TagsMenu from "./TagsMenu";
-import css from "./Header.module.css";
 import { tags } from "@/types/note";
+import css from "./Header.module.css";
 
 export default async function Header() {
-  const { notes } = await fetchNotes({});
-  console.log("notes from API:", notes);
+ // const { notes } = await fetchNotes({});
 
   return (
     <header className={css.header}>
