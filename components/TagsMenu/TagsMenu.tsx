@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import css from "@/components/Header/TagsMenu.module.css";
+import css from "@/components/TagsMenu/TagsMenu.module.css";
 
 type Props = {
   tags: string[];

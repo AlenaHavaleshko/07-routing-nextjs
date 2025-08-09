@@ -1,5 +1,5 @@
 import Link from "next/link";
-import TagsMenu from "./TagsMenu";
+import TagsMenu from "../TagsMenu/TagsMenu";
 import { tags } from "@/types/note";
 import css from "./Header.module.css";
 
