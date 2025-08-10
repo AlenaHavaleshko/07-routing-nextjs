@@ -11,7 +11,7 @@ export default async function NotesSlugPage({ params }: Props) {
   const slug = (await params).slug || []; // check (await params)
   let tag: string | undefined = undefined;
 
-  if (slug.length > 0 && slug[0] !== "all") {
+  if (slug.length > 0 && slug[0].toLocaleLowerCase() !== "all") {
     tag = slug[0]; 
   }
 
