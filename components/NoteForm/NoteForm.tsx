@@ -9,7 +9,7 @@ import * as Yup from "yup";
 import css from "./NoteForm.module.css";
 
 interface NoteFormProps {
-  onCloseModal: () => void; // якщо все добре, хочемо функцию, яка закриваэ модалку
+  onClose: () => void; // якщо все добре, хочемо функцию, яка закриваэ модалку
 }
 
 const formValues: NewNoteData = {
@@ -29,7 +29,7 @@ const NoteSchema = Yup.object().shape({
     .required("Required field"),
 });
 
-export default function NoteForm({ onCloseModal }: NoteFormProps) {
+export default function NoteForm({ onClose }: NoteFormProps) {
   const queryClient = useQueryClient(); // получили доступ до обьекта useQueryClient(), а там -> invalidateQueries
 
   const fieldId = useId();
@@ -40,7 +40,7 @@ export default function NoteForm({ onCloseModal }: NoteFormProps) {
       queryClient.invalidateQueries({
         queryKey: ["notes"],
       });
-      onCloseModal();
+      onClose();
     },
   });
 
@@ -107,7 +107,7 @@ export default function NoteForm({ onCloseModal }: NoteFormProps) {
             <button
               type="button"
               className={css.cancelButton}
-              onClick={onCloseModal}
+              onClick={onClose}
             >
               Cancel
             </button>

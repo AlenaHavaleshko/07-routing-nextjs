@@ -11,7 +11,7 @@ export default async function NotesSlugPage({ params }: Props) {
   const slug = (await params).slug || []; // check (await params)
   let tag: string | undefined = undefined;
 
-  if (slug.length > 0 && slug[0].toLocaleLowerCase() !== "all") {
+  if (slug.length > 0 && slug[0].toLowerCase() !== "all") {
     tag = slug[0]; 
   }
 
@@ -21,5 +21,10 @@ export default async function NotesSlugPage({ params }: Props) {
     return <NotesClient initialData={data} tag={tag} />;
   } catch (error) {
     console.log("Error fetching notes:", error);
+   return (
+    <div>
+      <p>Something went wrong while fetching the notes.</p>
+    </div>
+   )
   }
 }

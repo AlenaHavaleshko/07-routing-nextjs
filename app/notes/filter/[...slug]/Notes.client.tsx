@@ -11,7 +11,7 @@ import { useDebounce } from "use-debounce";
 import Pagination from "../../../../components/Pagination/Pagination";
 import NoteList from "../../../../components/NoteList/NoteList";
 import SearchBox from "../../../../components/SearchBox/SearchBox";
-import NoteModal from "../../../../components/Modal/Modal";
+import Modal from "../../../../components/Modal/Modal";
 import NoteForm from "../../../../components/NoteForm/NoteForm";
 import Loader from "../../../../components/Loader/Loader";
 import ErrorMessage from "../../../../components/ErrorMessage/ErrorMessage";
@@ -45,19 +45,9 @@ export default function NotesClient({ initialData, tag }: Props) {
   });
   const totalPages = data?.totalPages ?? 0;
 
-  // const updateSearchQuery = useDebouncedCallback((newSearchQuery: string) => {
-  //   setSearchQuery(newSearchQuery);
-  //   setCurrentPage(1);
-  // }, 300);
-
-  useEffect(() => {
-    if (isSuccess && data?.notes?.length === 0) {
-      toast.error("Any notes found for your request.");
-    }
-  }, [isSuccess, data]);
-
   return (
     <>
+    {}
       <div className={css.app}>
         <header className={css.toolbar}>
           <Toaster position="top-center" />
@@ -82,14 +72,19 @@ export default function NotesClient({ initialData, tag }: Props) {
             Create note +
           </button>
         </header>
+        {isSuccess && data?.notes?.length === 0 && (
+          <div className={css.emptyState}>
+             <p>Any notes found for your request.</p>
+          </div>
+        )}
         {data?.notes && data?.notes.length > 0 && (
           <NoteList notes={data?.notes} />
         )}
         {error && <strong>Ooops there was an error...</strong>}
         {isModalOpen && (
-          <NoteModal onClose={closeModal}>
-            <NoteForm onCloseModal={closeModal} />
-          </NoteModal>
+          <Modal onClose={closeModal}>
+            <NoteForm onClose={closeModal} />
+          </Modal>
         )}
       </div>
     </>
