@@ -7,7 +7,7 @@ import { FetchNotesResponse } from "@/lib/api";
 import { Toaster } from "react-hot-toast";
 import { toast } from "react-hot-toast";
 import { useEffect } from "react";
-import { useDebouncedCallback } from "use-debounce";
+import { useDebounce } from "use-debounce";
 import Pagination from "../../../../components/Pagination/Pagination";
 import NoteList from "../../../../components/NoteList/NoteList";
 import SearchBox from "../../../../components/SearchBox/SearchBox";
@@ -24,25 +24,28 @@ type Props = {
 
 export default function NotesClient({ initialData, tag }: Props) {
   // стани (для пошуку searchQuery (стан пошуку))
-  const [searchQuery, setSearchQuery] = useState("");
+  const [inputValue, setInputValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [debouncedValue] = useDebounce(inputValue, 300);
+
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
   const { data, isLoading, error, isError, isSuccess } = useQuery({
-    queryKey: ["notes", tag, searchQuery, currentPage],
+    queryKey: ["notes", tag, debouncedValue, currentPage],
     queryFn: () =>
-      fetchNotes({ tag, search: searchQuery || "", page: currentPage }),
+      fetchNotes({ tag, search: debouncedValue || "", page: currentPage }),
     placeholderData: keepPreviousData,
     initialData,
   });
   const totalPages = data?.totalPages ?? 0;
 
-  const updateSearchQuery = useDebouncedCallback((newSearchQuery: string) => {
-    setSearchQuery(newSearchQuery);
-    setCurrentPage(1);
-  }, 300);
+  // const updateSearchQuery = useDebouncedCallback((newSearchQuery: string) => {
+  //   setSearchQuery(newSearchQuery);
+  //   setCurrentPage(1);
+  // }, 300);
 
   useEffect(() => {
     if (isSuccess && data?.notes?.length === 0) {
@@ -55,7 +58,10 @@ export default function NotesClient({ initialData, tag }: Props) {
       <div className={css.app}>
         <header className={css.toolbar}>
           <Toaster position="top-center" />
-          <SearchBox onSearch={updateSearchQuery} />
+          <SearchBox onSearch={(val) => {
+            setInputValue(val);
+            setCurrentPage(1);
+          }}  />
           {isLoading && <Loader />}
           {isError && (
             <ErrorMessage
