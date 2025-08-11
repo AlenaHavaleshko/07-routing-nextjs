@@ -37,12 +37,20 @@ export default function NotesClient({ initialData, tag }: Props) {
     queryKey: ["notes", tag, debouncedValue, currentPage],
     queryFn: () =>
       fetchNotes({ 
-        tag: tag === "All" ? undefined : tag, 
+        tag: tag && tag !== "All" ? tag : undefined, 
         search: debouncedValue || "", 
         page: currentPage }),
     placeholderData: keepPreviousData,
-    initialData,
+    initialData: currentPage === 1 && !debouncedValue
+    ? initialData
+    : undefined,
   });
+
+  useEffect(() => {
+  setInputValue("");
+  setCurrentPage(1);
+}, [tag]);
+
   const totalPages = data?.totalPages ?? 0;
 
   return (
@@ -77,10 +85,9 @@ export default function NotesClient({ initialData, tag }: Props) {
              <p>Any notes found for your request.</p>
           </div>
         )}
-        {data?.notes && data?.notes.length > 0 && (
+        {isSuccess && data?.notes && data?.notes.length > 0 && (
           <NoteList notes={data?.notes} />
         )}
-        {error && <strong>Ooops there was an error...</strong>}
         {isModalOpen && (
           <Modal onClose={closeModal}>
             <NoteForm onClose={closeModal} />
